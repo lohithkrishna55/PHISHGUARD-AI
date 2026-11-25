@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>PHISHGUARD AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+
+        <h1>🛡️ PHISHGUARD AI</h1>
+
+        <p>Smart Phishing Website Detection System</p>
+
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <h2>Protect Yourself From Phishing</h2>
+
+        <p>
+            Analyze suspicious website URLs
+            using intelligent security checks.
+        </p>
+
+    </section>
+
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <h2>🔍 Website Security Scanner</h2>
+
+
+        <!-- URL Scanner Form -->
+        <form action="/" method="POST">
+
+            <input
+                type="text"
+                name="url"
+                placeholder="Enter website URL"
+                maxlength="2048"
+                value="{{ scanned_url }}"
+                required
+            >
+
+            <button type="submit">
+                Scan Website
+            </button>
+
+        </form>
+
+
+        <!-- Scan Results -->
+        {% if result %}
+
+        <div class="result">
+
+            <h2>Scan Results</h2>
+
+            <h3 class="
+                {% if result.status == 'High Risk' %}
+                    high-risk
+                {% elif result.status == 'Suspicious' %}
+                    suspicious
+                {% elif result.status == 'Low Risk' %}
+                    low-risk
+                {% endif %}
+            ">
+                {{ result.status }}
+            </h3>
+
+
+            <div class="score">
+
+                Risk Score: {{ result.score }}/100
+
+            </div>
+
+
+            <h3>Security Observations</h3>
+
+            <ul>
+
+                {% for reason in result.reasons %}
+
+                    <li>{{ reason }}</li>
+
+                {% endfor %}
+
+            </ul>
+
+
+            <p class="warning">
+
+                This result is based on URL patterns only.
+                It does not certify that a website is safe.
+
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <hr>
+
+
+        <!-- Recent Scan History -->
+        <h2>📊 Recent Scan History</h2>
+
+        <div class="history">
+
+            {% for item in history %}
+
+            <div class="history-card">
+
+                <p>
+                    <b>URL:</b> {{ item.url }}
+                </p>
+
+                <p>
+                    <b>Risk Score:</b>
+                    {{ item.score }}/100
+                </p>
+
+                <p>
+                    <b>Status:</b>
+                    {{ item.status }}
+                </p>
+
+            </div>
+
+            {% else %}
+
+            <p>No scan history available.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <h3>APEXFORGE 2K26</h3>
+
+        <p>
+            Cybersecurity Track | PHISHGUARD AI
+        </p>
+
+        <p>
+            Think Before You Click!
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
