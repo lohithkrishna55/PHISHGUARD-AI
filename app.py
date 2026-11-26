@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import sqlite3
 from pathlib import Path
 from detector import analyze_url
-
+from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 app.secret_key = "phishguard-demo-secret"
@@ -83,7 +83,13 @@ def home():
         scanned_url=scanned_url,
         history=history
     )
-
+@app.route("/clear-history", methods=["POST"])
+def clear_history():
+    conn = get_db()
+    conn.execute("DELETE FROM scans")
+    conn.commit()
+    conn.close()
+    return redirect(url_for("home"))
 
 # Run Flask application
 initialize_db()
